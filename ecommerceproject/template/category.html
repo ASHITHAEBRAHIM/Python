@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block metadescription%}
+{% if category %}
+{{category.description|truncatewords:155}}
+{% else %}
+Welcome to ABC Store where you can buy different items................
+{% endif %}
+{% endblock %}
+
+{% block title %}
+{% if category %}
+{{category.name}}-Nani Kart
+{% else %}
+See our New Collections-Nani Kart
+{% endif %}
+{% endblock %}
+
+{% block content %}
+{% if category %}
+<div>
+    <div class="row my-row-class">
+        <div class="mx-auto">
+        <p>
+            <a href="{% url 'ecommerceapp:allProdCat' %}">Our Product Collection</a>
+        </p>
+    </div>
+         </div>
+</div>
+{% endif %}
+<div class="mx-auto">
+  {% if category %}
+    <img class="my-image" src="{{category.image.url}}" alt="{{category.name}}" height="500" width="500">
+</div>
+<br>
+<div>
+    <h1 class="text-center my-title">{{category.name}}</h1>
+    <p class="text-justify">{{category.description}}</p>
+</div>
+{% else %}
+<div>
+    <img class=" my-image-padding" src="{%static 'img/BANNER.png' %}" alt="our products" width="1550px">
+</div>
+<br>
+<div>
+    <h1 class="text-center my-title">Our Products Collection</h1>
+    <p class="text-justify">
+        Jewels, also known as gemstones or precious stones, are naturally occurring minerals or organic materials that possess beauty, rarity, durability, and often, great value. These gemstones are sought after for their aesthetic appeal and have been used in jewelry and various decorative objects for thousands of years.Here are some common types of gemstones or jewels:
+Diamond: The hardest known natural material, composed of carbon atoms arranged in a crystal lattice structure. Diamonds are prized for their brilliance and are the most popular choice for engagement rings.
+
+Ruby: A red gemstone and a variety of the mineral corundum. Ruby is one of the four precious gemstones, and its red color is caused by the presence of chromium.
+
+Sapphire: Another variety of corundum, sapphires come in various colors, although blue is the most well-known. They are highly valued for their color and hardness.
+
+Emerald: A green gemstone, a variety of the mineral beryl, and valued for its vivid green color and rarity.
+
+Amethyst: A purple variety of quartz, amethyst is a popular gemstone for jewelry due to its attractive color and availability.
+
+Topaz: A gemstone with a wide range of colors, including yellow, blue, pink, and more. It is often used as a substitute for more expensive gems.
+
+Opal: Known for its unique play of color, opal is a hydrated silica mineral with a captivating appearance.
+
+Pearl: An organic gemstone formed inside the shells of certain mollusks, primarily oysters and mussels. Pearls are valued for their luster and beauty.
+
+Jade: A term used for two different minerals—jadeite and nephrite. Jade has cultural significance in many Asian countries and is used for both jewelry and artistic carvings.
+</p>
+</div>
+{% endif %}
+<div class="container">
+    <div class="row mx-auto">
+        {% for product in products.object_list %}
+        <div class="my-bottom-margin col-9 col-sm-12 col-md-4 col-lg-4">
+            <div class="card text-center" style="min-width:18rem;">
+                <a href="{{product.get_url}}">
+                    <img class="card-img-top" src="{{product.image.url}}" alt="{{p.name}}" height="350" width="250"></a>
+            <div class="card-body">
+                <h4>{{product.name}}</h4>
+                <p>{{product.price}}</p>
+            </div>
+            </div>
+        </div>
+          {% endfor %}
+    </div>
+    <div class="mx-auto">
+      {% if products.paginator.num_pages > 1 %}
+        <div class="text-center">
+            {% for pg in products.paginator.page_range %}
+            <a href="?page={{pg}}" class="btn btn-light btn-sm {% if products.number == pg %} active {% endif %}">{{pg}}</a>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+    <br>
+</div>
+{% endblock %}
